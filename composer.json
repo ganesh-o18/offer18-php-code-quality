@@ -4,5 +4,6 @@
   "require": {
     "php": ">=7.3",
     "nikic/php-parser": "^4.19"
-  }
+  },
+  "bin": ["./src/bin/code"]
 }
