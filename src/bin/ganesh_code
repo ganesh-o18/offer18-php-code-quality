@@ -2,7 +2,7 @@
 
 <?php
 
-$code = '<?php $hello = 1; ?>';
+$code = file_get_contents('dummy-test/index.php');
 
 $tokens = token_get_all($code);
 
