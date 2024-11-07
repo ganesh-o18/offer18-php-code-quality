@@ -3,7 +3,7 @@
 
 <?php
 
-foreach ([__DIR__ . '/../../vendor/autoload.php', __DIR__ . '/../vendor/autoload.php'] as $file) {
+foreach ([__DIR__ . '/../../../vendor/autoload.php', __DIR__ . '/../vendor/autoload.php'] as $file) {
   if (file_exists($file)) {
     require $file;
     break;
@@ -12,17 +12,11 @@ foreach ([__DIR__ . '/../../vendor/autoload.php', __DIR__ . '/../vendor/autoload
 
 echo "YeAAAAAAAAAAAAAAAAAA";
 
-use PhpParser\Error;
-use PhpParser\Node;
-use PhpParser\NodeTraverser;
-use PhpParser\NodeVisitorAbstract;
-use PhpParser\ParserFactory;
-
-class NonCamelCaseVariableVisitor extends NodeVisitorAbstract {
+class NonCamelCaseVariableVisitor extends PhpParser\NodeVisitorAbstract {
   public $nonCamelCaseVariables = [];
 
-  public function enterNode(Node $node) {
-    if ($node instanceof Node\Expr\Variable && is_string($node->name)) {
+  public function enterNode(PhpParser\Node $node) {
+    if ($node instanceof PhpParser\Node\Expr\Variable && is_string($node->name)) {
       // Check if the variable name is not camel case
       if (!preg_match('/^[a-z]+([A-Z][a-z]*)*$/', $node->name)) {
         $this->nonCamelCaseVariables[] = $node->name;
@@ -40,10 +34,10 @@ $correctVariable = 4;
 CODE;
 
 try {
-  $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+  $parser = (new PhpParser\ParserFactory)->create(PhpParser\ParserFactory::PREFER_PHP7);
   $ast = $parser->parse($code);
 
-  $traverser = new NodeTraverser();
+  $traverser = new PhpParser\NodeTraverser\NodeTraverser();
   $visitor = new NonCamelCaseVariableVisitor();
   $traverser->addVisitor($visitor);
   $traverser->traverse($ast);
@@ -52,7 +46,7 @@ try {
     echo @json_encode($visitor->nonCamelCaseVariables);
   }
 
-} catch (Error $e) {
+} catch (Exception $e) {
   echo 'Parse error: ', $e->getMessage();
 }
 
