@@ -2,8 +2,7 @@
   "name": "ganesh-o18/php-code-quality",
   "description": "A short description of what your package does",
   "require": {
-    "php": ">=7.3",
-    "nikic/php-parser": "^4.19"
+    "php": ">=7.3"
   },
   "bin": [
     "src/bin/ganesh_code"
