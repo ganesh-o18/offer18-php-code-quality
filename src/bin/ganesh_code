@@ -2,6 +2,14 @@
 
 <?php
 
+if ($argc > 1) {
+    // Loop through arguments (skip $argv[0] since it’s the script name)
+    for ($i = 1; $i < $argc; $i++) {
+        echo "Argument $i: " . $argv[$i] . PHP_EOL;
+    }
+} else {
+    echo "No arguments passed!" . PHP_EOL;
+}
 $code = file_get_contents('/github/workspace/dummy-test/index.php');
 
 $tokens = token_get_all($code);
