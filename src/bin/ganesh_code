@@ -2,21 +2,30 @@
 
 <?php
 
-if ($argc > 1) {
-    // Loop through arguments (skip $argv[0] since it’s the script name)
-    for ($i = 1; $i < $argc; $i++) {
-        echo "Argument $i: " . $argv[$i] . PHP_EOL;
-    }
-} else {
-    echo "No arguments passed!" . PHP_EOL;
+// Check if directory path is provided as an argument
+if ($argc < 2) {
+    echo "Please provide a directory path as an argument." . PHP_EOL;
+    exit(1);
 }
-$code = file_get_contents('/github/workspace/dummy-test/index.php');
 
-$tokens = token_get_all($code);
+$directory = $argv[1];
 
-foreach ($tokens as $token) {
-  if (is_array($token)) {
-    echo token_name($token[0]) . ' ' . $token[1];
-  }
+// Check if the provided path is a directory
+if (!is_dir($directory)) {
+    echo "The provided path is not a valid directory." . PHP_EOL;
+    exit(1);
 }
-// var_dump($tokens);
+
+// Get all files in the directory
+$files = scandir($directory);
+
+echo "Files in directory '$directory':" . PHP_EOL;
+
+// Loop through and print each file
+foreach ($files as $file) {
+    // Skip the current and parent directory entries
+    if ($file === '.' || $file === '..') continue;
+
+    echo $file . PHP_EOL;
+}
+
