@@ -11,17 +11,15 @@ if ($argc < 2) {
 $directory = $argv[1];
 
 $files = $directory . '/changed_files.txt';
-$changedFiles = file_get_contents($files);
-$changedFileArray = array_values(array_filter(explode('\n', $changedFiles)));
+$lines = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
-echo @json_encode($changedFileArray);
-
-echo PHP_EOL . "File after removing:" . PHP_EOL;
-foreach ($changedFileArray as $fileName) {
-  $fileActualName[] = preg_replace('/\n/', '', $fileName);
+$files = [];
+foreach ($lines as $line) {
+    // Process each line
+    echo $line . "\n";
+    $files[] = $line;
 }
 
-echo @json_encode($fileActualName);
 
 // Check if the provided path is a directory
 if (!is_dir($directory)) {
