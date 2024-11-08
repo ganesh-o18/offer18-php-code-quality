@@ -26,11 +26,17 @@ foreach ($files as $file) {
     // Skip the current and parent directory entries
     if ($file === '.' || $file === '..') continue;
     if (pathinfo($file, PATHINFO_EXTENSION) === 'php') {
-        $phpFiles[] = $file; // Add to array
+        $phpFiles[] = $file;
     }
 }
 
 foreach ($phpFiles as $file) {
-    echo file_get_contents($file);
+    $source = file_get_contents($file);
+    $tokens = token_get_all($source);
+    foreach ($tokens as $token) {
+        if (is_array($token)) {
+            echo token_name($token[1]) . ' ' . $token[0] . PHP_EOL;
+        }
+    }
 }
 
