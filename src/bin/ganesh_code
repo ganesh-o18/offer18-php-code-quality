@@ -4,39 +4,50 @@
 
 // Check if directory path is provided as an argument
 if ($argc < 2) {
-    echo "Please provide a directory path as an argument." . PHP_EOL;
-    exit(1);
+  echo "Please provide a directory path as an argument." . PHP_EOL;
+  exit(1);
 }
 
 $directory = $argv[1];
 
 // Check if the provided path is a directory
 if (!is_dir($directory)) {
-    echo "The provided path is not a valid directory." . PHP_EOL;
-    exit(1);
+  echo "The provided path is not a valid directory." . PHP_EOL;
+  exit(1);
 }
 
-// Get all files in the directory
 $files = scandir($directory);
 
 echo "Files in directory '$directory':" . PHP_EOL;
 
-// Loop through and print each file
+$phpFiles = [];
+
 foreach ($files as $file) {
-    // Skip the current and parent directory entries
-    if ($file === '.' || $file === '..') continue;
-    if (pathinfo($file, PATHINFO_EXTENSION) === 'php') {
-        $phpFiles[] = $file;
-    }
+  if ($file === '.' || $file === '..') continue;
+  if (pathinfo($file, PATHINFO_EXTENSION) === 'php') {
+    $phpFiles[] = $file;
+  }
 }
+
+function isCamelCase($string)
+{
+  $string = ltrim($string, '$');
+  return preg_match('/^[a-z][a-zA-Z0-9]*$/', $string);
+}
+
+$nonCamelCaseVariables = [];
 
 foreach ($phpFiles as $file) {
-    $source = file_get_contents($file);
-    $tokens = token_get_all($source);
-    foreach ($tokens as $token) {
-        if (is_array($token)) {
-            echo token_name($token[1]) . ' ' . $token[0] . PHP_EOL;
-        }
+  $source = file_get_contents($file);
+  $tokens = token_get_all($source);
+  foreach ($tokens as $index => $token) {
+    if (is_array($token) && $token[0] === T_VARIABLE) {
+      $variableName = $token[1];
+      if (!isCamelCase($variableName)) {
+        $nonCamelCaseVariables[] = $variableName;
+      }
     }
+  }
 }
 
+echo json_encode($nonCamelCaseVariables);
