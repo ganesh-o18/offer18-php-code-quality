@@ -2,7 +2,7 @@
 
 <?php
 
-$code = file_get_contents('/dummy-test/index.php');
+$code = file_get_contents('/github/workspace/dummy-test/index.php');
 
 $tokens = token_get_all($code);
 
