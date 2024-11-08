@@ -16,6 +16,13 @@ $changedFileArray = array_values(array_filter(explode(' ', $changedFiles)));
 
 echo @json_encode($changedFileArray);
 
+echo "File after removing \n";
+foreach ($changedFileArray as $fileName) {
+  $fileActualName[] = preg_replace('/\n/', '', $fileName);
+}
+
+echo @json_encode($fileActualName);
+
 // Check if the provided path is a directory
 if (!is_dir($directory)) {
   echo "The provided path is not a valid directory." . PHP_EOL;
@@ -28,7 +35,7 @@ echo "Files in directory '$directory':" . PHP_EOL;
 
 $phpFiles = [];
 
-$files = $changedFileArray;
+$files = $fileActualName;
 
 foreach ($files as $file) {
   if ($file === '.' || $file === '..') continue;
