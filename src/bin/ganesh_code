@@ -39,12 +39,21 @@ echo "FILE" . PHP_EOL;
 
 echo @json_encode($phpFiles) . PHP_EOL;
 
+// List of global variables to ignore
+$globalVariables = [
+  '$_GET', '$_POST', '$_COOKIE', '$_SESSION', '$_REQUEST', '$_SERVER', '$_ENV', '$_FILES', '$_GLOBALS'
+];
+
+
 foreach ($phpFiles as $file) {
   $source = file_get_contents($file);
   $tokens = token_get_all($source);
   foreach ($tokens as $index => $token) {
     if (is_array($token) && $token[0] === T_VARIABLE) {
       $variableName = $token[1];
+      if (in_array($variableName, $globalVariables)) {
+        continue;
+      }
       if (!isCamelCase($variableName)) {
         $nonCamelCaseVariables[] = $variableName;
       }
