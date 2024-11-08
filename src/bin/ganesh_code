@@ -59,4 +59,4 @@ echo json_encode($nonCamelCaseVariables);
 
 $outpuFilePath = $directory . '/output.txt';
 
-file_put_contents($outpuFilePath, "Hello world from output");
+file_put_contents($outpuFilePath, json_encode($nonCamelCaseVariables));
