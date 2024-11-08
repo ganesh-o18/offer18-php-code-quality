@@ -37,6 +37,10 @@ function isCamelCase($string)
 
 $nonCamelCaseVariables = [];
 
+echo "FILE" . PHP_EOL;
+
+echo @json_encode($phpFiles);
+
 foreach ($phpFiles as $file) {
   $source = file_get_contents($file);
   $tokens = token_get_all($source);
