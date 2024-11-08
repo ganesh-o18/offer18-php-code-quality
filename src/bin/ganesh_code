@@ -10,8 +10,8 @@ if ($argc < 2) {
 
 $directory = $argv[1];
 
-$files = $directory . '/changed_files.txt';
-$lines = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+$paths = $directory . '/changed_files.txt';
+$lines = file($paths, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
 $files = [];
 foreach ($lines as $line) {
@@ -22,18 +22,18 @@ foreach ($lines as $line) {
 
 
 // Check if the provided path is a directory
-if (!is_dir($directory)) {
-  echo "The provided path is not a valid directory." . PHP_EOL;
-  exit(1);
-}
+//if (!is_dir($directory)) {
+//  echo "The provided path is not a valid directory." . PHP_EOL;
+// exit(1);
+//}
 
-$files = scandir($directory);
+//$files = scandir($directory);
 
-echo "Files in directory '$directory':" . PHP_EOL;
+//echo "Files in directory '$directory':" . PHP_EOL;
 
-$phpFiles = [];
+//$phpFiles = [];
 
-$files = $fileActualName;
+//$files = $fileActualName;
 
 foreach ($files as $file) {
   if ($file === '.' || $file === '..') continue;
