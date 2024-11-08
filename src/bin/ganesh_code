@@ -10,6 +10,9 @@ if ($argc < 2) {
 
 $directory = $argv[1];
 
+$files = $directory . '/changed_files.txt';
+echo file_put_contents($files);
+
 // Check if the provided path is a directory
 if (!is_dir($directory)) {
   echo "The provided path is not a valid directory." . PHP_EOL;
