@@ -61,7 +61,7 @@ $outpuFilePath = $directory . '/output.txt';
 
 $comment = '#### Following variables are not in camel case' . PHP_EOL;
 foreach ($nonCamelCaseVariables as $variableName) {
-  $comment .= '- ' . $variableName;
+  $comment .= '- ❌ ' . $variableName . PHP_EOL;
 }
 
 file_put_contents($outpuFilePath, $comment);
