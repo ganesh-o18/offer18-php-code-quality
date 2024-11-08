@@ -56,3 +56,7 @@ foreach ($phpFiles as $file) {
 
 echo "Non camel-case variable" . PHP_EOL;
 echo json_encode($nonCamelCaseVariables);
+
+$outpuFilePath = $directory . '/output.txt';
+
+file_put_contents($outpuFilePath, "Hello world from output");
