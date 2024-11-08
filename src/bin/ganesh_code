@@ -59,4 +59,9 @@ echo json_encode($nonCamelCaseVariables);
 
 $outpuFilePath = $directory . '/output.txt';
 
-file_put_contents($outpuFilePath, json_encode($nonCamelCaseVariables));
+$comment = '#### Following variables are not in camel case\n';
+foreach ($nonCamelCaseVariables as $variableName) {
+  $comment .= '- ' . $variableName;
+}
+
+file_put_contents($outpuFilePath, $comment);
