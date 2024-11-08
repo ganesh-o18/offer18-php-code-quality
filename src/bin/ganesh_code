@@ -41,7 +41,7 @@ echo @json_encode($phpFiles) . PHP_EOL;
 
 // List of global variables to ignore
 $globalVariables = [
-  '$_GET', '$_POST', '$_COOKIE', '$_SESSION', '$_REQUEST', '$_SERVER', '$_ENV', '$_FILES', '$_GLOBALS'
+  '$_GET', '$_POST', '$_COOKIE', '$_SESSION', '$_REQUEST', '$_SERVER', '$_ENV', '$_FILES', '$_GLOBALS', '$Root_Account_Data'
 ];
 
 
