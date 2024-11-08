@@ -20,21 +20,6 @@ foreach ($lines as $line) {
     $files[] = $line;
 }
 
-
-// Check if the provided path is a directory
-//if (!is_dir($directory)) {
-//  echo "The provided path is not a valid directory." . PHP_EOL;
-// exit(1);
-//}
-
-//$files = scandir($directory);
-
-//echo "Files in directory '$directory':" . PHP_EOL;
-
-//$phpFiles = [];
-
-//$files = $fileActualName;
-
 foreach ($files as $file) {
   if ($file === '.' || $file === '..') continue;
   if (pathinfo($file, PATHINFO_EXTENSION) === 'php') {
