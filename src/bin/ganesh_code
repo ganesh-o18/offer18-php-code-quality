@@ -39,7 +39,7 @@ $nonCamelCaseVariables = [];
 
 echo "FILE" . PHP_EOL;
 
-echo @json_encode($phpFiles);
+echo @json_encode($phpFiles) . PHP_EOL;
 
 foreach ($phpFiles as $file) {
   $source = file_get_contents($file);
@@ -54,4 +54,5 @@ foreach ($phpFiles as $file) {
   }
 }
 
+echo "Non camel-case variable" . PHP_EOL;
 echo json_encode($nonCamelCaseVariables);
