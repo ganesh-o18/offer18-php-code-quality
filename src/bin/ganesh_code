@@ -12,11 +12,11 @@ $directory = $argv[1];
 
 $files = $directory . '/changed_files.txt';
 $changedFiles = file_get_contents($files);
-$changedFileArray = array_values(array_filter(explode(PHP_EOL, $changedFiles)));
+$changedFileArray = array_values(array_filter(explode('\n', $changedFiles)));
 
 echo @json_encode($changedFileArray);
 
-echo "File after removing \n";
+echo PHP_EOL . "File after removing:" . PHP_EOL;
 foreach ($changedFileArray as $fileName) {
   $fileActualName[] = preg_replace('/\n/', '', $fileName);
 }
