@@ -11,7 +11,10 @@ if ($argc < 2) {
 $directory = $argv[1];
 
 $files = $directory . '/changed_files.txt';
-echo file_get_contents($files);
+$changedFiles = file_get_contents($files);
+$changedFileArray = array_values(array_filter(explode(' ', $changedFiles)));
+
+echo @json_encode($changedFileArray);
 
 // Check if the provided path is a directory
 if (!is_dir($directory)) {
@@ -24,6 +27,8 @@ $files = scandir($directory);
 echo "Files in directory '$directory':" . PHP_EOL;
 
 $phpFiles = [];
+
+$files = $changedFileArray;
 
 foreach ($files as $file) {
   if ($file === '.' || $file === '..') continue;
