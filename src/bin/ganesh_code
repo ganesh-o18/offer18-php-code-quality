@@ -25,7 +25,12 @@ echo "Files in directory '$directory':" . PHP_EOL;
 foreach ($files as $file) {
     // Skip the current and parent directory entries
     if ($file === '.' || $file === '..') continue;
+    if (pathinfo($file, PATHINFO_EXTENSION) === 'php') {
+        $phpFiles[] = $file; // Add to array
+    }
+}
 
-    echo $file . PHP_EOL;
+foreach ($phpFiles as $file) {
+    echo file_get_contents($file);
 }
 
