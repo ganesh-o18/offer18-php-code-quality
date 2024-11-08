@@ -9,7 +9,6 @@ if ($argc < 2) {
 }
 
 $directory = $argv[1];
-
 $paths = $directory . '/changed_files.txt';
 $lines = file($paths, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
@@ -20,6 +19,7 @@ foreach ($lines as $line) {
     $files[] = $line;
 }
 
+$phpFiles = [];
 foreach ($files as $file) {
   if ($file === '.' || $file === '..') continue;
   if (pathinfo($file, PATHINFO_EXTENSION) === 'php') {
@@ -29,21 +29,27 @@ foreach ($files as $file) {
 
 function isCamelCase($string)
 {
+  // Remove the `$` for variable name checking
   $string = ltrim($string, '$');
+  
+  // Skip variables that are entirely uppercase
+  if (strtoupper($string) === $string) {
+    return true; // Treat as camel case to ignore it
+  }
+  
+  // Check for camel case pattern
   return preg_match('/^[a-z][a-zA-Z0-9]*$/', $string);
 }
 
-$nonCamelCaseVariables = [];
-
-echo "FILE" . PHP_EOL;
-
-echo @json_encode($phpFiles) . PHP_EOL;
-
 // List of global variables to ignore
 $globalVariables = [
-  '$_GET', '$_POST', '$_COOKIE', '$_SESSION', '$_REQUEST', '$_SERVER', '$_ENV', '$_FILES', '$_GLOBALS', '$Root_Account_Data'
+  '$_GET', '$_POST', '$_COOKIE', '$_SESSION', '$_REQUEST', '$_SERVER', '$_ENV', '$_FILES', '$_GLOBALS'
 ];
 
+$nonCamelCaseVariables = [];
+
+echo "FILES:" . PHP_EOL;
+echo @json_encode($phpFiles) . PHP_EOL;
 
 foreach ($phpFiles as $file) {
   $source = file_get_contents($file);
@@ -51,24 +57,35 @@ foreach ($phpFiles as $file) {
   foreach ($tokens as $index => $token) {
     if (is_array($token) && $token[0] === T_VARIABLE) {
       $variableName = $token[1];
-      if (in_array($variableName, $globalVariables)) {
+      $lineNumber = $token[2]; // Line number of the variable
+      
+      // Skip global variables and uppercase variables
+      if (in_array($variableName, $globalVariables) || strtoupper($variableName) === $variableName) {
         continue;
       }
+      
       if (!isCamelCase($variableName)) {
-        $nonCamelCaseVariables[] = $variableName;
+        // Store variable name with line number
+        $nonCamelCaseVariables[] = [
+          'variable' => $variableName,
+          'line' => $lineNumber,
+          'file' => $file
+        ];
       }
     }
   }
 }
 
-echo "Non camel-case variable" . PHP_EOL;
-echo json_encode($nonCamelCaseVariables);
-
 $outpuFilePath = $directory . '/output.txt';
 
-$comment = '#### Following variables are not in camel case' . PHP_EOL;
-foreach ($nonCamelCaseVariables as $variableName) {
-  $comment .= '- ❌ ' . $variableName . PHP_EOL;
+if (empty($nonCamelCaseVariables)) {
+  // Add a check mark if all variables are in camel case
+  $comment = '#### ✅ All variables are in camel case.' . PHP_EOL;
+} else {
+  $comment = '#### Following variables are not in camel case' . PHP_EOL;
+  foreach ($nonCamelCaseVariables as $entry) {
+    $comment .= '- ❌ ' . $entry['variable'] . ' (File: ' . $entry['file'] . ', Line: ' . $entry['line'] . ')' . PHP_EOL;
+  }
 }
-$comment = substr($comment, 0, 60000);
-file_put_contents($outpuFilePath, $comment);
+
+file_put_contents($outpuFilePath, substr($comment, 0, 60000));
