@@ -12,7 +12,7 @@ $directory = $argv[1];
 
 $files = $directory . '/changed_files.txt';
 $changedFiles = file_get_contents($files);
-$changedFileArray = array_values(array_filter(explode(' ', $changedFiles)));
+$changedFileArray = array_values(array_filter(explode(PHP_EOL, $changedFiles)));
 
 echo @json_encode($changedFileArray);
 
