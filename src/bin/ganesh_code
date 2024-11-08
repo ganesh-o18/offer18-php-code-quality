@@ -84,7 +84,7 @@ if (empty($nonCamelCaseVariables)) {
 } else {
   $comment = '#### Following variables are not in camel case' . PHP_EOL;
   foreach ($nonCamelCaseVariables as $entry) {
-    $comment .= '- ❌ ' . $entry['variable'] . ' (File: ' . $entry['file'] . ', Line: ' . $entry['line'] . ')' . PHP_EOL;
+    $comment .= "- ❌ Line: " . $entry['line'] . ", Variable: `" . $entry['variable'] . "` (File: `" . $entry['file'] . "`)" . PHP_EOL;
   }
 }
 
