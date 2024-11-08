@@ -43,7 +43,7 @@ function isCamelCase($string)
 
 // List of global variables to ignore
 $globalVariables = [
-  '$_GET', '$_POST', '$_COOKIE', '$_SESSION', '$_REQUEST', '$_SERVER', '$_ENV', '$_FILES', '$_GLOBALS', '$Root_Account_Data'
+  '$_GET', '$_POST', '$_COOKIE', '$_SESSION', '$_REQUEST', '$_SERVER', '$_ENV', '$_FILES', '$_GLOBALS', '$Root_Account_Data', '$Config_File'
 ];
 
 $nonCamelCaseVariables = [];
